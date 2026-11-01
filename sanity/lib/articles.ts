@@ -75,3 +75,48 @@ export async function getArticle(slug: string) {
     {slug}
   )
 }
+export type Category = {_id: string; title: string; slug: string}
+
+export async function getCategories() {
+  'use cache'
+  cacheLife('minutes')
+  cacheTag('articles')
+
+  return client.fetch<Category[]>(`
+    *[_type == "category" && defined(slug.current)] | order(_createdAt asc) {
+      _id,
+      title,
+      "slug": slug.current
+    }
+  `)
+}
+
+export async function getCategoryWithArticles(slug: string) {
+  'use cache'
+  cacheLife('minutes')
+  cacheTag('articles')
+
+  return client.fetch<{
+    title: string
+    description?: string
+    articles: ArticleCard[]
+  } | null>(
+    `*[_type == "category" && slug.current == $slug][0] {
+      title,
+      description,
+      "articles": *[_type == "article" && references(^._id)]
+        | order(publishedAt desc) {
+          _id,
+          title,
+          subtitle,
+          excerpt,
+          publishedAt,
+          "slug": slug.current,
+          "category": category->title,
+          "author": author->name,
+          "image": heroImage.asset->url
+        }
+    }`,
+    {slug}
+  )
+}
