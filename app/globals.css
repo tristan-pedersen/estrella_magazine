@@ -24,3 +24,13 @@
   color: var(--foreground);
   font-family: var(--font-body);
 }
+/* Large first letter on the first paragraph of an article */
+.drop-cap > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-size: 5.5rem;
+  font-weight: 700;
+  line-height: 0.8;
+  padding: 0.3rem 0.75rem 0 0;
+  color: var(--heading);
+}

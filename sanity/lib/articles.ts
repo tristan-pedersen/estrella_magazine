@@ -227,3 +227,45 @@ export async function getHomepage() {
       }
   }`)
 }
+export type ArticlePageData = {
+  _id: string
+  title: string
+  subtitle?: string
+  excerpt?: string
+  publishedAt: string
+  category?: string
+  categorySlug?: string
+  author?: {name: string; bio?: string; photo?: string; instagram?: string}
+  image?: string
+  imageAlt?: string
+  body?: PortableTextBlock[]
+  related: ArticleCard[]
+}
+
+export async function getArticlePage(slug: string) {
+  'use cache'
+  cacheLife('minutes')
+  cacheTag('articles')
+
+  return client.fetch<ArticlePageData | null>(
+    `*[_type == "article" && slug.current == $slug][0] {
+      _id,
+      title,
+      subtitle,
+      excerpt,
+      publishedAt,
+      "category": category->title,
+      "categorySlug": category->slug.current,
+      "author": author->{name, bio, "photo": photo.asset->url, instagram},
+      "image": heroImage.asset->url,
+      "imageAlt": heroImage.alt,
+      body[] {
+        ...,
+        _type == "image" => {..., "url": asset->url}
+      },
+      "related": *[_type == "article" && defined(slug.current) && _id != ^._id && category._ref == ^.category._ref]
+        | order(publishedAt desc)[0...3] {${CARD_FIELDS}}
+    }`,
+    {slug}
+  )
+}
