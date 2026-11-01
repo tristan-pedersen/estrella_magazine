@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3d8ce;
+  --foreground: #000000;
+  --heading: #5e1104;
+  --trim-olive: #7f8330;
+  --trim-sand: #d1c791;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-heading: var(--heading);
+  --color-olive: var(--trim-olive);
+  --color-sand: var(--trim-sand);
+  --font-body: var(--font-newsreader), Georgia, serif;
+  --font-display: var(--font-newsreader), Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
+/* The magazine look applies only inside the public site, so the writers' Studio is left alone. */
+.site {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }

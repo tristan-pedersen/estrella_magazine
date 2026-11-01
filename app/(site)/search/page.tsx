@@ -25,7 +25,7 @@ async function Results({
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Results for “{query}”</h1>
+     <h1 className="text-3xl font-bold text-heading">Results for “{query}”</h1>
       {articles.length === 0 ? (
         <p className="mt-6">No articles found. Try a different word.</p>
       ) : (

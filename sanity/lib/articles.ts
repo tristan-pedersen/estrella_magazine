@@ -190,3 +190,40 @@ export async function searchSuggestions(query: string) {
     {pattern}
   )
 }
+const CARD_FIELDS = `
+  _id,
+  title,
+  subtitle,
+  excerpt,
+  publishedAt,
+  "slug": slug.current,
+  "category": category->title,
+  "author": author->name,
+  "image": heroImage.asset->url
+`
+
+export type HomepageData = {
+  lead: ArticleCard | null
+  latest: ArticleCard[]
+  sections: {title: string; slug: string; articles: ArticleCard[]}[]
+}
+
+export async function getHomepage() {
+  'use cache'
+  cacheLife('minutes')
+  cacheTag('articles')
+
+  return client.fetch<HomepageData>(`{
+    "lead": *[_type == "article" && defined(slug.current)]
+      | order(coalesce(featured, false) desc, publishedAt desc)[0] {${CARD_FIELDS}},
+    "latest": *[_type == "article" && defined(slug.current)]
+      | order(publishedAt desc)[0...8] {${CARD_FIELDS}},
+    "sections": *[_type == "category" && defined(slug.current)]
+      | order(_createdAt asc) {
+        title,
+        "slug": slug.current,
+        "articles": *[_type == "article" && defined(slug.current) && references(^._id)]
+          | order(publishedAt desc)[0...4] {${CARD_FIELDS}}
+      }
+  }`)
+}

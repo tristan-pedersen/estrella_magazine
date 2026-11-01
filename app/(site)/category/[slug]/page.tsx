@@ -16,7 +16,7 @@ async function CategoryArticles({params}: {params: Promise<{slug: string}>}) {
 
   return (
     <>
-      <h1 className="text-4xl font-bold">{category.title}</h1>
+      <h1 className="text-4xl font-bold text-heading">{category.title}</h1>
       {category.description && <p className="mt-3 text-lg">{category.description}</p>}
 
       {category.articles.length === 0 ? (

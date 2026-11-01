@@ -6,22 +6,29 @@ export async function Header() {
   const categories = await getCategories()
 
   return (
-    <header className="border-b px-6 py-5">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-baseline justify-between gap-4">
-        <Link href="/" className="text-2xl font-bold">
-          Estrella Magazine
-        </Link>
+    <>
+      <div className="h-2 bg-sand" />
+      <header className="border-b border-olive px-6 py-5">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+          {/* When your logo arrives, replace this text link with an <Image> */}
+          <Link
+            href="/"
+            className="font-display text-3xl font-semibold tracking-tight text-heading"
+          >
+            Estrella Magazine
+          </Link>
 
-        <nav className="flex flex-wrap gap-6 text-sm uppercase tracking-widest">
-          {categories.map((c) => (
-            <Link key={c._id} href={`/category/${c.slug}`}>
-              {c.title}
-            </Link>
-          ))}
-        </nav>
+          <nav className="flex flex-wrap gap-6 text-sm uppercase tracking-widest">
+            {categories.map((c) => (
+              <Link key={c._id} href={`/category/${c.slug}`} className="hover:text-heading">
+                {c.title}
+              </Link>
+            ))}
+          </nav>
 
-        <SearchBox />
-      </div>
-    </header>
+          <SearchBox />
+        </div>
+      </header>
+    </>
   )
 }
