@@ -1,6 +1,8 @@
 import {cacheLife, cacheTag} from 'next/cache'
-import {client} from './client'
 import type {PortableTextBlock} from 'sanity'
+import {client} from './client'
+
+/* ---------- Types ---------- */
 
 export type ArticleCard = {
   _id: string
@@ -13,6 +15,22 @@ export type ArticleCard = {
   author?: string
   image?: string
 }
+
+export type ArticleFull = {
+  _id: string
+  title: string
+  subtitle?: string
+  publishedAt: string
+  category?: string
+  author?: string
+  image?: string
+  imageAlt?: string
+  body?: PortableTextBlock[]
+}
+
+export type Category = {_id: string; title: string; slug: string}
+
+/* ---------- Homepage ---------- */
 
 export async function getLatestArticles() {
   'use cache'
@@ -34,17 +52,8 @@ export async function getLatestArticles() {
       }
   `)
 }
-export type ArticleFull = {
-  _id: string
-  title: string
-  subtitle?: string
-  publishedAt: string
-  category?: string
-  author?: string
-  image?: string
-  imageAlt?: string
-  body?: PortableTextBlock[]
-}
+
+/* ---------- Single article ---------- */
 
 export async function getArticleSlugs() {
   return client.fetch<string[]>(
@@ -75,7 +84,8 @@ export async function getArticle(slug: string) {
     {slug}
   )
 }
-export type Category = {_id: string; title: string; slug: string}
+
+/* ---------- Categories ---------- */
 
 export async function getCategories() {
   'use cache'
@@ -118,5 +128,65 @@ export async function getCategoryWithArticles(slug: string) {
         }
     }`,
     {slug}
+  )
+}
+
+/* ---------- Search (titles only) ---------- */
+
+export async function searchArticles(query: string) {
+  const terms = query
+    .replace(/[*"]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 5)
+
+  if (terms.length === 0) return []
+
+  // "star gir" becomes "star* gir*" so partial words match
+  const pattern = terms.map((t) => `${t}*`).join(' ')
+
+  return client.fetch<ArticleCard[]>(
+    `*[_type == "article" && defined(slug.current) && title match $pattern]
+      | order(publishedAt desc)[0...24] {
+        _id,
+        title,
+        subtitle,
+        excerpt,
+        publishedAt,
+        "slug": slug.current,
+        "category": category->title,
+        "author": author->name,
+        "image": heroImage.asset->url
+      }`,
+    {pattern}
+  )
+}
+export type SearchSuggestion = {
+  _id: string
+  title: string
+  slug: string
+  category?: string
+}
+
+export async function searchSuggestions(query: string) {
+  const terms = query
+    .replace(/[*"]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 5)
+
+  if (terms.length === 0) return []
+
+  const pattern = terms.map((t) => `${t}*`).join(' ')
+
+  return client.fetch<SearchSuggestion[]>(
+    `*[_type == "article" && defined(slug.current) && title match $pattern]
+      | order(publishedAt desc)[0...6] {
+        _id,
+        title,
+        "slug": slug.current,
+        "category": category->title
+      }`,
+    {pattern}
   )
 }
