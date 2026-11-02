@@ -4,8 +4,8 @@
   --background: #f3d8ce;
   --foreground: #000000;
   --heading: #5e1104;
-  --trim-olive: #7f8330;
-  --trim-sand: #d1c791;
+  --trim-olive: #5e1104;
+  --trim-sand: #5e1104
 }
 
 @theme inline {

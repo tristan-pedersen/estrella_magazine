@@ -13,9 +13,9 @@ export async function Header() {
           {/* When your logo arrives, replace this text link with an <Image> */}
           <Link
             href="/"
-            className="font-display text-3xl font-semibold tracking-tight text-heading"
+            className="font-display text-3xl font-semibold uppercase tracking-tight text-heading [word-spacing:0.2em]"
           >
-            Estrella Magazine
+            ESTRELLA MAGAZINE
           </Link>
 
           <nav className="flex flex-wrap gap-6 text-sm uppercase tracking-widest">
