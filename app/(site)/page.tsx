@@ -1,20 +1,25 @@
 import {Suspense} from 'react'
 import {getHomepage} from '@/sanity/lib/articles'
-import {LeadStory, SectionHeader, StoryCard} from '@/components/stories'
+import {FeaturedPair, LeadStory, SectionHeader, StoryCard} from '@/components/stories'
 
 async function HomepageContent() {
-  const {lead, latest, sections} = await getHomepage()
+  const {features, latest, sections} = await getHomepage()
 
-  if (!lead) {
+  if (features.length === 0) {
     return <p className="py-10">No articles published yet.</p>
   }
 
-  const secondary = latest.filter((a) => a._id !== lead._id).slice(0, 3)
+  const featuredIds = new Set(features.map((a) => a._id))
+  const secondary = latest.filter((a) => !featuredIds.has(a._id)).slice(0, 3)
   const visibleSections = sections.filter((s) => s.articles.length > 0)
 
   return (
     <>
-      <LeadStory article={lead} />
+      {features.length > 1 ? (
+        <FeaturedPair articles={features} />
+      ) : (
+        <LeadStory article={features[0]} />
+      )}
 
       {secondary.length > 0 && (
         <div className="mt-12 grid gap-8 border-t border-olive pt-10 sm:grid-cols-3">

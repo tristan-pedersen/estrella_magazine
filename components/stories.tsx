@@ -55,6 +55,7 @@ export function SectionHeader({title, href}: {title: string; href: string}) {
   )
 }
 
+/* One big story, used when only a single story is featured */
 export function LeadStory({article}: {article: ArticleCard}) {
   const href = `/articles/${article.slug}`
 
@@ -66,7 +67,10 @@ export function LeadStory({article}: {article: ArticleCard}) {
       <div className="lg:col-span-4">
         {article.category && <Label>{article.category}</Label>}
         <h2 className="mt-3 font-display text-4xl font-bold leading-[1.05] sm:text-5xl">
-          <Link href={href} className="hover:underline decoration-olive decoration-2 underline-offset-4">
+          <Link
+            href={href}
+            className="decoration-olive decoration-2 underline-offset-4 hover:underline"
+          >
             {article.title}
           </Link>
         </h2>
@@ -85,6 +89,50 @@ export function LeadStory({article}: {article: ArticleCard}) {
   )
 }
 
+/* Two featured stories side by side (stacked on phones) */
+export function FeaturedPair({articles}: {articles: ArticleCard[]}) {
+  return (
+    <div className="grid gap-10 md:grid-cols-2">
+      {articles.map((article, i) => {
+        const href = `/articles/${article.slug}`
+
+        return (
+          <article
+            key={article._id}
+            className={i === 1 ? 'md:border-l md:border-olive md:pl-10' : ''}
+          >
+            <Picture article={article} ratio="aspect-[3/2]" />
+            <div className="mt-5">
+              {article.category && <Label>{article.category}</Label>}
+              <h2 className="mt-2 font-display text-3xl font-bold leading-[1.05] lg:text-4xl">
+                <Link
+                  href={href}
+                  className="decoration-olive decoration-2 underline-offset-4 hover:underline"
+                >
+                  {article.title}
+                </Link>
+              </h2>
+              {(article.subtitle || article.excerpt) && (
+                <p className="mt-3 text-lg leading-snug">
+                  {article.subtitle ?? article.excerpt}
+                </p>
+              )}
+              <Byline article={article} />
+              <Link
+                href={href}
+                className="mt-4 inline-block border-b-2 border-olive pb-1 text-xs font-semibold uppercase tracking-[0.2em] text-heading"
+              >
+                Read the story →
+              </Link>
+            </div>
+          </article>
+        )
+      })}
+    </div>
+  )
+}
+
+/* A regular story card, used in the secondary row, section rails, and category pages */
 export function StoryCard({
   article,
   size = 'medium',
@@ -104,7 +152,7 @@ export function StoryCard({
         >
           <Link
             href={`/articles/${article.slug}`}
-            className="hover:underline decoration-olive decoration-2 underline-offset-4"
+            className="decoration-olive decoration-2 underline-offset-4 hover:underline"
           >
             {article.title}
           </Link>
