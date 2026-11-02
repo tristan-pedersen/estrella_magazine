@@ -93,14 +93,11 @@ export function LeadStory({article}: {article: ArticleCard}) {
 export function FeaturedPair({articles}: {articles: ArticleCard[]}) {
   return (
     <div className="grid gap-10 md:grid-cols-2">
-      {articles.map((article, i) => {
+      {articles.map((article) => {
         const href = `/articles/${article.slug}`
 
         return (
-          <article
-            key={article._id}
-            className={i === 1 ? 'md:border-l md:border-olive md:pl-10' : ''}
-          >
+          <article key={article._id}>
             <Picture article={article} ratio="aspect-[3/2]" />
             <div className="mt-5">
               {article.category && <Label>{article.category}</Label>}
