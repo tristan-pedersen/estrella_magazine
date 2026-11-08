@@ -8,7 +8,7 @@ export async function Header() {
   return (
     <>
       <div className="h-2 bg-sand" />
-      <header className="border-b border-olive px-6 py-5">
+      <header className="px-6 py-5">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
           {/* When your logo arrives, replace this text link with an <Image> */}
           <Link

@@ -84,7 +84,7 @@ async function Article({params}: {params: Promise<{slug: string}>}) {
             {article.subtitle}
           </p>
         )}
-        <div className="mx-auto mt-8 flex max-w-2xl items-center justify-center gap-3 border-y border-olive py-3 text-xs uppercase tracking-widest">
+        <div className="mx-auto mt-8 flex max-w-2xl items-center justify-center gap-3 py-3 text-xs uppercase tracking-widest">
           {article.author && (
             <>
               <span>By {article.author.name}</span>
@@ -110,7 +110,7 @@ async function Article({params}: {params: Promise<{slug: string}>}) {
       </div>
 
       {article.author && (
-        <aside className="mx-auto mt-16 flex max-w-2xl gap-5 border-t border-olive px-6 pt-8">
+        <aside className="mx-auto mt-16 flex max-w-2xl gap-5 px-6">
           {article.author.photo && (
             <img
               src={`${article.author.photo}?w=200&h=200&fit=crop&auto=format`}

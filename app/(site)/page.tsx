@@ -22,7 +22,7 @@ async function HomepageContent() {
       )}
 
       {secondary.length > 0 && (
-        <div className="mt-12 grid gap-8 border-t border-olive pt-10 sm:grid-cols-3">
+        <div className="mt-12 grid gap-8 sm:grid-cols-3">
           {secondary.map((article) => (
             <StoryCard key={article._id} article={article} />
           ))}

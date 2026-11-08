@@ -44,7 +44,7 @@ function Picture({article, ratio}: {article: ArticleCard; ratio: string}) {
 
 export function SectionHeader({title, href}: {title: string; href: string}) {
   return (
-    <div className="flex items-baseline justify-between border-t-4 border-olive pt-3">
+    <div className="flex items-baseline justify-between">
       <h2 className="font-display text-3xl font-bold uppercase tracking-wide text-heading">
         {title}
       </h2>

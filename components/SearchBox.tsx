@@ -98,7 +98,7 @@ export function SearchBox() {
                   </Link>
                 </li>
               ))}
-              <li className="border-t">
+              <li>
                 <Link
                   href={`/search?q=${encodeURIComponent(q)}`}
                   onClick={() => setOpen(false)}
