@@ -3,9 +3,9 @@
 :root {
   --background: #f0e9db;
   --foreground: #000000;
-  --heading: #171717;
+  --heading: #5e1104;
   --trim-olive: #171717;
-  --trim-sand: ##171717
+  --trim-sand: #171717;
 }
 
 @theme inline {
